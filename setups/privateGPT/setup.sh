@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Check if a project name is provided
+if [ -z "$1" ]; then
+  echo "Usage: $0 <project_name>"
+  exit 1
+fi
+
+PROJECT_NAME=$1
+
 # Update and upgrade system
 sudo apt-get update
 sudo apt-get upgrade -y
@@ -60,9 +68,9 @@ CMAKE_ARGS='-DLLAMA_CUBLAS=on' poetry run pip install --force-reinstall --no-cac
 poetry run python scripts/setup
 
 # Ingest data for the project
-make ingest ./shufflebuy_website/components -- --watch
-make ingest ./shufflebuy_website/pages -- --watch
-make ingest ./shufflebuy_website -- --watch
+make ingest ./${PROJECT_NAME}_website/components -- --watch
+make ingest ./${PROJECT_NAME}_website/pages -- --watch
+make ingest ./${PROJECT_NAME}_website -- --watch
 
 # Run the project
 make run
