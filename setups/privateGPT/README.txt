@@ -74,10 +74,12 @@ The script performs the following steps:
     chmod +x setup.sh
     ```
 
-3. Run the setup script:
+3. Run the setup script with your project name as an argument:
     ```bash
-    ./setup.sh
+    ./setup.sh <project_name>
     ```
+
+    Replace `<project_name>` with the name of your project (e.g., `shufflebuy`).
 
 ## Contributing
 
