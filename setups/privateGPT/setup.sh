@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#usage ./setup.sh <project_name>
 # Check if a project name is provided
 if [ -z "$1" ]; then
   echo "Usage: $0 <project_name>"
@@ -48,8 +49,14 @@ source ~/.bashrc
 # Verify poetry installation
 poetry --version
 
+# Verify poetry installation
+pip install poetry -U
+
 # Install project dependencies using poetry
 poetry install --extras "ui embeddings-huggingface llms-llama-cpp vector-stores-qdrant"
+
+# Install poetry for Python 3.11
+sudo apt install python3-poetry
 
 # Install NVIDIA CUDA toolkit (optional, if required for your project)
 wget https://developer.download.nvidia.com/compute/cuda/repos/wsl-ubuntu/x86_64/cuda-keyring_1.1-1_all.deb
@@ -64,13 +71,16 @@ nvidia-smi.exe
 # Install llama-cpp-python with CUBLAS support
 CMAKE_ARGS='-DLLAMA_CUBLAS=on' poetry run pip install --force-reinstall --no-cache-dir llama-cpp-python
 
+# Install llama-cpp-python without CUBLAS support
+pip install llama-cpp-python
+
 # Run project setup script
 poetry run python scripts/setup
 
 # Ingest data for the project
-make ingest ./${PROJECT_NAME}_website/components -- --watch
-make ingest ./${PROJECT_NAME}_website/pages -- --watch
-make ingest ./${PROJECT_NAME}_website -- --watch
+make ingest ./${PROJECT_NAME}/components -- --watch
+make ingest ./${PROJECT_NAME}/pages -- --watch
+make ingest ./${PROJECT_NAME} -- --watch
 
 # Run the project
 make run
